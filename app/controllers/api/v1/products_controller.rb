@@ -7,7 +7,8 @@ class Api::V1::ProductsController < ApplicationController
     end
 
     def index
-        render json: ProductSerializer.new(Product.all, { include: [:user]}).serializable_hash, status: :ok
+        products = Product.search(params)
+        render json: ProductSerializer.new(products, { include: [:user]}).serializable_hash, status: :ok
     end
 
     def create
