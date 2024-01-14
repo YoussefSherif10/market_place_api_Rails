@@ -4,7 +4,7 @@ module Authenticatable
 
         header = request.headers['Authorization']
         return nil if header.nil?
-        header = header.split(' ').last
+        header = header.split(' ').last # support Bearer token
 
         decode = JsonWebToken.decode(header)
         @current_user = User.find(decode[:user_id]) rescue ActiveRecord::RecordNotFound
