@@ -7,8 +7,9 @@ class Api::V1::ProductsController < ApplicationController
     end
 
     def index
-        products = Product.search(params)
-        render json: ProductSerializer.new(products, { include: [:user]}).serializable_hash, status: :ok
+        products = Product.page(params[:page]).per(params[:per_page]).search(params)
+        options = links('api_v1_products_path', products)
+        render json: ProductSerializer.new(products, options).serializable_hash, status: :ok
     end
 
     def create
